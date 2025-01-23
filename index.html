@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TODO list</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      div.todo-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 20px;
+        padding: 50px 20px;
+        width: 90%;
+      }
+      @media screen and (min-width: 768px) {
+        div.todo-wrapper {
+          width: 60%;
+        }
+      }
+      div.input-part {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        gap: 2px;
+        width: 90%;
+      }
+      input#todo-title {
+        padding: 10px 6px;
+        border-radius: 50px;
+        border: 1px lightgray solid;
+        width: 100%;
+      }
+      input#todo-title:focus {
+        border: 1px gray solid !important;
+      }
+      button.add-btn {
+        background-color: black;
+        color: white;
+        border: 1px solid black;
+        padding: 10px 10px;
+        border-radius: 50px;
+      }
+      div.list-part {
+        width: 100%;
+        border: 1px #f7f7f7 solid;
+        border-radius: 10px;
+        padding: 10px;
+      }
+      div.list-part ul {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 10px;
+      }
+      div.list-part ul li {
+        list-style-type: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        width: 100%;
+        transition: 0.3s;
+        border-radius: 5px;
+        padding: 6px;
+      }
+      div.list-part ul li input {
+          background-color: transparent;
+        border: unset;
+        font-size: 16px;
+        width: 100%;
+        transition: 0.3s;
+      }
+      div.list-part ul li div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        gap: 2px;
+      }
+      div.list-part ul li button {
+        border: unset;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      div.list-part ul li button.btn-del {
+        width: 20px;
+        height: 20px;
+        background-color: black;
+        color: white;
+        border-radius: 50px;
+      }
+      div.list-part ul li button.btn-edit {
+        background-color: transparent;
+        padding: 3px;
+      }
+      .dark {
+          background-color: black !important;
+          color: white;
+          border-radius: 10px;
+          padding: 6px;
+      }
+      .done {
+          text-decoration: line-through !important;
+          background-color: gray;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- TODO-list  -->
+    <div class="todo-wrapper">
+      <div class="input-part">
+        <button class="add-btn">Add</button>
+        <input type="text" id="todo-title" dir="auto" />
+      </div>
+      <div class="list-part">
+        <ul>
+          
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      let inputTitle = document.querySelector("#todo-title");
+      let addBtn = document.querySelector(".add-btn");
+      let list = document.querySelector(".list-part ul");
+
+      function addPost() {
+        
+        let post = document.createElement("li");
+
+        let text = document.createElement("input");
+        text.setAttribute("readonly", "");
+        text.setAttribute("value", inputTitle.value);
+        text.addEventListener("click",()=>{
+            text.parentElement.classList.toggle("done")
+        })
+        let divB = document.createElement("div");
+
+        let editB = document.createElement("button");
+        editB.setAttribute("class", "btn-edit");
+        editB.innerText = "Edit";
+        editB.addEventListener("click",(link)=>{
+            if (link.target.innerText == "Edit"){
+                link.target.innerText = "Done"
+                link.target.parentElement.parentElement.children[0].removeAttribute("readonly")
+                link.target.parentElement.parentElement.children[0].classList.add("dark")
+            } else {
+                link.target.innerText = "Edit"
+                link.target.parentElement.parentElement.children[0].setAttribute("readonly","")
+                link.target.parentElement.parentElement.children[0].classList.remove("dark")
+            }
+            
+        });
+
+        let delB = document.createElement("button");
+        delB.setAttribute("class", "btn-del");
+        delB.innerHTML = "&times;";
+        delB.addEventListener("click",(link)=>{
+            link.target.parentElement.parentElement.remove()
+        })
+
+        divB.append(editB);
+        divB.append(delB);
+
+        post.append(text);
+        post.append(divB);
+
+        list.append(post);
+        inputTitle.value = ""
+      }
+          
+      addBtn.addEventListener("click", addPost);
+    </script>
+  </body>
+</html>
